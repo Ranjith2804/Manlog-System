@@ -1,6 +1,6 @@
 # ManLog — Manufacturing Logistics Platform
 
-A collaborative Angular 17+ app built by a student team. Each module lives in its own feature branch.
+A collaborative Angular 17+ app developed as a team. Each module lives in its own feature branch.
 
 ---
 
@@ -12,6 +12,7 @@ ng serve
 ```
 
 Open → **http://localhost:4200**
+Soon gonna Deploy and I'll Update
 
 Login with: `admin@manlog.com` / `123`
 
@@ -66,8 +67,7 @@ git push -u origin feature/procurement-module
 
 ---
 
-## Angular Concept Map (Sessions 1–3)
-
+## Angular Concept Map 
 | Concept | File |
 |---|---|
 | `@Component`, selector, standalone | Every component |
