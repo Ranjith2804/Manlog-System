@@ -1,0 +1,29 @@
+/* ============================================================
+   ManLog — Global Styles
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background-color: #f4f6f9;
+  color: #1a1d23;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Scrollbar (optional nice touch) */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #b0b7c3; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #7f8ca1; }
