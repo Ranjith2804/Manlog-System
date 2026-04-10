@@ -35,6 +35,7 @@ src/app/
 ├── features/
 │   ├── auth/login/             ← login page  (TL)
 │   ├── home/                   ← dashboard   (TL)
+│   ├── admin/                  ← 🔒 admin team
 │   ├── procurement/            ← 🔒 Procurement team
 │   ├── supplier/               ← 🔒 Supplier team
 │   └── distribution/           ← 🔒 Distribution team
