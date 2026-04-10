@@ -15,7 +15,7 @@ import { NgIf } from '@angular/common';
       <div class="login-brand">
         <div class="brand-content">
           <div class="brand-logo">
-            <i class="bi bi-boxes"></i>
+            <i class="fas fa-boxes text-primary"></i>
           </div>
           <h1 class="brand-name">ManLog</h1>
           <p class="brand-tagline">Manufacturing Logistics, Unified.</p>
@@ -93,7 +93,7 @@ import { NgIf } from '@angular/common';
 
           <p class="login-hint">
             <i class="bi bi-info-circle"></i>
-            Demo — use <strong>admin&#64;manlog.com</strong> / <strong>123</strong>
+            Demo — use role email (admin, dc, procurement, supplier) / <strong>123</strong>
           </p>
         </div>
       </div>
@@ -314,12 +314,16 @@ export class LoginComponent {
   showPassword: boolean = false;
   loading: boolean = false;
 
-  // Hardcoded valid credential
-  private readonly VALID_EMAIL = 'admin@manlog.com';
-  private readonly VALID_PASSWORD = '123';
+  // Users list
+  private readonly USERS = [
+    { email: 'admin@manlog.com', password: '123', route: '/admin' },
+    { email: 'procurement@manlog.com', password: '123', route: '/procurement' },
+    { email: 'supplier@manlog.com', password: '123', route: '/supplier' },
+    { email: 'dc@manlog.com', password: '123', route: '/distribution' }
+  ];
 
   // Concept: Router injected via constructor
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   // Concept: event binding (ngSubmit), Router.navigate
   onLogin(): void {
@@ -328,11 +332,12 @@ export class LoginComponent {
 
     // Simulate a tiny async delay so the concept is visible
     setTimeout(() => {
-      if (
-        this.email.trim() === this.VALID_EMAIL &&
-        this.password === this.VALID_PASSWORD
-      ) {
-        this.router.navigate(['/home']);
+      const user = this.USERS.find(
+        u => u.email === this.email.trim() && u.password === this.password
+      );
+
+      if (user) {
+        this.router.navigate([user.route]);
       } else {
         this.showError = true;
         this.loading = false;

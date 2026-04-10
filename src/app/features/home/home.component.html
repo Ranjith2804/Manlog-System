@@ -1,0 +1,145 @@
+<!-- NAV -->
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="brand" routerLink="/">
+      <span class="fas fa-boxes text-primary"></span>
+      <span class="brand-name">MANLOG</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a *ngFor="let link of navLinks" [href]="link.href" class="nav-link">
+        {{ link.label }}
+      </a>
+    </nav>
+
+    <div class="nav-actions">
+      <a routerLink="/login" class="btn btn-ghost">Login</a>
+      <a routerLink="/login" class="btn btn-primary">Get Started</a>
+    </div>
+  </div>
+</header>
+
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Enterprise Supply Chain Platform</p>
+      <h1 class="hero-heading">
+        Unify Your Supply<br>Chain Operations
+      </h1>
+      <p class="hero-sub">
+        From procurement to last-mile delivery — ManLog connects every stakeholder
+        in real time with precision visibility.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/login" class="btn btn-primary btn-lg">
+          Access Portal
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+        <a href="#features" class="btn btn-outline btn-lg">Learn More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- STATS -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-row">
+      <div *ngFor="let stat of stats" class="stat-item">
+        <span class="stat-value">{{ stat.value }}</span>
+        <span class="stat-label">{{ stat.label }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow">Core Modules</p>
+      <h2 class="section-title">Built for Every Role in Your Chain</h2>
+    </div>
+
+    <div class="features-grid">
+      <div *ngFor="let f of features" class="feature-card">
+        <span class="material-symbols-outlined feature-icon">{{ f.icon }}</span>
+        <h3 class="feature-title">{{ f.title }}</h3>
+        <p class="feature-desc">{{ f.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section class="steps-section">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow">How It Works</p>
+      <h2 class="section-title">The Lifecycle of a Shipment</h2>
+    </div>
+
+    <div class="steps-grid">
+      <div *ngFor="let step of steps" class="step-card">
+        <span class="step-number">{{ step.number }}</span>
+        <h4 class="step-title">{{ step.title }}</h4>
+        <p class="step-desc">{{ step.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div>
+        <h2 class="cta-heading">Ready to take control of your supply chain?</h2>
+        <p class="cta-sub">Join 1,000+ logistics leaders using ManLog globally.</p>
+      </div>
+      <a routerLink="/login" class="btn btn-primary btn-lg">Request Access</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <div class="brand">
+        <span class="fas fa-boxes text-primary"></span>
+        <span class="brand-name">MANLOG</span>
+      </div>
+      <p class="footer-copy">© 2026 ManLog Enterprise. All rights reserved.</p>
+      <p class="footer-copy">Developed by Ranjith.</p>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-col">
+        <p class="footer-col-title">Platform</p>
+        <a href="#" class="footer-link">Solutions</a>
+        <a href="#" class="footer-link">Features</a>
+        <a href="#" class="footer-link">Portals</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Company</p>
+        <a href="#" class="footer-link">About</a>
+        <a href="#" class="footer-link">Network</a>
+        <a href="#" class="footer-link">Compliance</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Account</p>
+        <a routerLink="/login" class="footer-link">Login</a>
+        <a routerLink="/login" class="footer-link">Sign Up</a>
+        <a href="#" class="footer-link">Support</a>
+      </div>
+    </div>
+  </div>
+</footer>

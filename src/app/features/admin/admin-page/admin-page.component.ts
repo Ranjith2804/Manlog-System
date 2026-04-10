@@ -1,0 +1,195 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { ShellComponent } from '../../../core/layout/shell/shell.component';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { SidebarItem } from '../../../shared/components/sidebar/sidebar.component';
+
+@Component({
+  selector: 'app-admin-page',
+  standalone: true,
+  imports: [CommonModule, FormsModule, ShellComponent, ModalComponent],
+  template: `
+    <app-shell
+      title="Global Master Data Management"
+      subtitle="Configure Supply Chain Network"
+      userLabel="Admin User"
+      userIcon="fa-user-shield"
+      sidebarSubtitle="System Administrator"
+      [items]="menuItems"
+    >
+      <div class="card-custom shadow-sm mb-4 p-3 border-0">
+        <div class="row d-flex justify-content-between align-items-center g-3">
+          <div class="col-md-5 d-flex gap-2">
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0"><i class="fas fa-search"></i></span>
+              <input type="text" class="form-control border-start-0" placeholder="Search records..." [(ngModel)]="searchTerm">
+            </div>
+            <select class="form-select" style="max-width: 150px;" [(ngModel)]="statusFilter">
+              <option value="">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="col-md-auto text-end">
+            <button class="btn btn-primary fw-semibold shadow-sm" type="button" (click)="showModal = true">
+              <i class="fas fa-plus-circle me-1"></i> Add New Record
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-custom shadow-sm">
+        <div class="table-responsive" *ngIf="activeSection === 'suppliers'; else dcTable">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th class="ps-4">Supplier Code</th>
+                <th>Supplier Name</th>
+                <th>Contact Number</th>
+                <th>Email Address</th>
+                <th>City / Region</th>
+                <th>Status</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let supplier of filteredSuppliers">
+                <td class="ps-4"><span class="badge badge-code rounded-1">{{ supplier.code }}</span></td>
+                <td class="fw-bold">{{ supplier.name }}</td>
+                <td>{{ supplier.phone }}</td>
+                <td>{{ supplier.email }}</td>
+                <td>{{ supplier.city }}</td>
+                <td>
+                  <span class="badge rounded-pill" [ngClass]="supplier.status === 'Active' ? 'badge-soft-success' : 'badge-soft-danger'">
+                    {{ supplier.status }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <i class="fas fa-edit text-primary me-3"></i>
+                  <i class="fas fa-trash text-danger"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #dcTable>
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th class="ps-4">DC Code</th>
+                  <th>Distribution Center Name</th>
+                  <th>Contact Email</th>
+                  <th>Location / City</th>
+                  <th>Status</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let dc of filteredDcs">
+                  <td class="ps-4"><span class="badge badge-code rounded-1">{{ dc.code }}</span></td>
+                  <td class="fw-bold">{{ dc.name }}</td>
+                  <td>{{ dc.email }}</td>
+                  <td>{{ dc.city }}</td>
+                  <td>
+                    <span class="badge rounded-pill" [ngClass]="dc.status === 'Active' ? 'badge-soft-success' : 'badge-soft-danger'">
+                      {{ dc.status }}
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <i class="fas fa-edit text-primary me-3"></i>
+                    <i class="fas fa-trash text-danger"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-template>
+      </div>
+
+      <app-modal [open]="showModal" (closed)="showModal = false">
+        <span modal-title><i class="fas fa-plus-circle text-primary me-2"></i>Add Master Record</span>
+
+        <div class="mb-4 d-flex gap-2">
+          <button type="button" class="btn" [ngClass]="modalTab === 'supplier' ? 'btn-primary' : 'btn-light border'" (click)="modalTab = 'supplier'">New Supplier</button>
+          <button type="button" class="btn" [ngClass]="modalTab === 'dc' ? 'btn-primary' : 'btn-light border'" (click)="modalTab = 'dc'">New Distribution Center</button>
+        </div>
+
+        <form *ngIf="modalTab === 'supplier'; else dcForm" class="row g-3">
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Supplier Name</label><input type="text" class="form-control" placeholder="Enter company name"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Supplier Code</label><input type="text" class="form-control" placeholder="e.g. SUP-005"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Email Address</label><input type="email" class="form-control" placeholder="contact@company.com"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Number</label><input type="text" class="form-control" placeholder="+91"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" placeholder="Select or enter city"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select"><option>Active</option><option>Inactive</option></select></div>
+        </form>
+
+        <ng-template #dcForm>
+          <form class="row g-3">
+            <div class="col-md-6"><label class="form-label text-muted small fw-bold">DC Name</label><input type="text" class="form-control" placeholder="Enter facility name"></div>
+            <div class="col-md-6"><label class="form-label text-muted small fw-bold">DC Code</label><input type="text" class="form-control" placeholder="e.g. DC-005"></div>
+            <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Email</label><input type="email" class="form-control" placeholder="dc.contact@manlog.com"></div>
+            <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" placeholder="Select or enter city"></div>
+            <div class="col-md-12"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select"><option>Active</option><option>Inactive</option></select></div>
+          </form>
+        </ng-template>
+
+        <div class="text-end mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-light border me-2" (click)="showModal = false">Cancel</button>
+          <button type="button" class="btn btn-primary px-4" (click)="showModal = false">{{ modalTab === 'supplier' ? 'Save Supplier' : 'Save Distribution Center' }}</button>
+        </div>
+      </app-modal>
+    </app-shell>
+  `
+})
+export class AdminPageComponent {
+  readonly menuEmitter = new EventEmitter<string>();
+
+  activeSection: 'suppliers' | 'dcs' = 'suppliers';
+  showModal = false;
+  modalTab: 'supplier' | 'dc' = 'supplier';
+  searchTerm = '';
+  statusFilter = '';
+
+  readonly suppliers = [
+    { code: 'SUP-001', name: 'Arun Traders', phone: '+91 9876543210', email: 'arun@traders.com', city: 'Chennai, TN', status: 'Active' },
+    { code: 'SUP-002', name: 'Meena Supplies', phone: '+91 9123456780', email: 'contact@meenasupplies.com', city: 'Bangalore, KA', status: 'Inactive' }
+  ];
+
+  readonly dcs = [
+    { code: 'DC-1001', name: 'Chennai Hub - Primary', email: 'chennai.hub@manlog.com', city: 'Chennai, TN', status: 'Active' },
+    { code: 'DC-1002', name: 'Bangalore Secondary', email: 'blr.sec@manlog.com', city: 'Bangalore, KA', status: 'Active' }
+  ];
+
+  get menuItems(): SidebarItem[] {
+    return [
+      { label: 'Suppliers', icon: 'fa-building', active: this.activeSection === 'suppliers', actionKey: 'suppliers' },
+      { label: 'Distribution Centers', icon: 'fa-warehouse', active: this.activeSection === 'dcs', actionKey: 'dcs' }
+    ];
+  }
+
+  constructor() {
+    this.menuEmitter.subscribe((section) => {
+      if (section === 'suppliers' || section === 'dcs') {
+        this.activeSection = section;
+      }
+    });
+  }
+
+  get filteredSuppliers() {
+    return this.suppliers.filter((supplier) => this.matchesFilters(supplier.name, supplier.status, supplier.code, supplier.city));
+  }
+
+  get filteredDcs() {
+    return this.dcs.filter((dc) => this.matchesFilters(dc.name, dc.status, dc.code, dc.city));
+  }
+
+  private matchesFilters(name: string, status: string, code: string, city: string): boolean {
+    const search = this.searchTerm.trim().toLowerCase();
+    const matchesSearch = !search || [name, status, code, city].some((value) => value.toLowerCase().includes(search));
+    const matchesStatus = !this.statusFilter || this.statusFilter === status;
+    return matchesSearch && matchesStatus;
+  }
+}
