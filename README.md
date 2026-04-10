@@ -8,13 +8,18 @@ A collaborative Angular 17+ app developed as a team. Each module lives in its ow
 
 ```bash
 npm install
-ng serve
+ng serve / npm start
 ```
 
-Open → **http://localhost:4200**
+Open → Localhost
+
 Soon gonna Deploy and I'll Update
 
-Login with: `admin@manlog.com` / `123`
+Login with:
+`admin@manlog.com` / `123`
+`Procurement@manlog.com` / `123`
+`DC@manlog.com` / `123`
+`Supplier@manlog.com` / `123`
 
 ---
 
