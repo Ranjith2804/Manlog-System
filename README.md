@@ -15,10 +15,14 @@ Open → Localhost
 
 Soon gonna Deploy and I'll Update
 
-Login with:
+# Login with:
+
 `admin@manlog.com` / `123`
+
 `Procurement@manlog.com` / `123`
+
 `DC@manlog.com` / `123`
+
 `Supplier@manlog.com` / `123`
 
 ---
