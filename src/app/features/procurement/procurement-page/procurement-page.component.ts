@@ -18,7 +18,8 @@ import { StatCardComponent } from '../../../shared/components/stat-card/stat-car
       userIcon="fa-user-shield"
       sidebarUserName="Nowshaath"
       sidebarSubtitle="Procurement-Head"
-      [items]="menuItems"
+      [menuItems]="menuItems"
+      [menuAction]="menuEmitter"
     >
       <div class="row mb-4">
         <div class="col-md-4"><app-stat-card label="Active POs (Value)" value="Rs 8,45,000" borderClass="border-primary-subtle" /></div>

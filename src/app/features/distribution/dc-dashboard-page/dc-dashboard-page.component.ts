@@ -17,7 +17,8 @@ import { SidebarItem } from '../../../shared/components/sidebar/sidebar.componen
       userIcon="fa-user-tie"
       sidebarUserName="Ranjith"
       sidebarSubtitle="DC Manager - Chennai Hub"
-      [items]="menuItems"
+      [menuItems]="menuItems"
+      [menuAction]="menuEmitter"
     >
       <div *ngIf="activeSection === 'receipts'; else inventorySection">
         <div class="d-flex justify-content-between align-items-center mb-3"><h5 class="fw-bold mb-0">Shipments At Gate (Action Required)</h5></div>

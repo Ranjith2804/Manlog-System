@@ -17,7 +17,8 @@ import { SidebarItem } from '../../../shared/components/sidebar/sidebar.componen
       userLabel="Admin User"
       userIcon="fa-user-shield"
       sidebarSubtitle="System Administrator"
-      [items]="menuItems"
+      [menuItems]="menuItems"
+      [menuAction]="menuEmitter"
     >
       <div class="card-custom shadow-sm mb-4 p-3 border-0">
         <div class="row d-flex justify-content-between align-items-center g-3">

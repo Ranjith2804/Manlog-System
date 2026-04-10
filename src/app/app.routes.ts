@@ -1,14 +1,6 @@
-// app.routes.ts  (root-level routing)
-// ─────────────────────────────────────────────────────────────────────────────
-// Wire the home feature under /features/home using lazy loading.
-// Add your other feature routes (login, signup, admin, etc.) similarly.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import { Routes } from '@angular/router';
 
 export const APP_ROUTES: Routes = [
-
-  // Landing / Home page
   {
     path: '',
     loadComponent: () =>
@@ -21,18 +13,17 @@ export const APP_ROUTES: Routes = [
       import('./features/auth/login/login.component').then(m => m.LoginComponent),
   },
 
-  // {
-  //   path: 'signup',
-  //   loadComponent: () =>
-  //     import('./features/signup/signup.component').then(m => m.SignupComponent),
-  // },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./features/admin/admin-page/admin-page.component').then(m => m.AdminPageComponent),
+  },
 
   {
     path: 'procurement',
     loadComponent: () =>
       import('./features/procurement/procurement-page/procurement-page.component')
         .then(m => m.ProcurementPageComponent),
-    // canActivate: [authGuard]  ← add guards when ready
   },
 
   {
@@ -49,13 +40,5 @@ export const APP_ROUTES: Routes = [
         .then(m => m.DcDashboardPageComponent),
   },
 
-  {
-    path: 'admin',
-    loadComponent: () =>
-      import('./features/admin/admin-page/admin-page.component').then(m => m.AdminPageComponent),
-  },
-  {
-    path: '**',
-    redirectTo: '',
-  },
+  { path: '**', redirectTo: '' },
 ];

@@ -16,7 +16,8 @@ import { SidebarItem } from '../../../shared/components/sidebar/sidebar.componen
       userLabel="Arun Kumar"
       userIcon="fa-user-circle"
       sidebarSubtitle="Arun Traders (Supplier)"
-      [items]="menuItems"
+      [menuItems]="menuItems"
+      [menuAction]="menuEmitter"
     >
       <div *ngIf="activeSection === 'products'; else orderSection">
         <div class="d-flex justify-content-between align-items-center mb-3">
