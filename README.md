@@ -8,7 +8,7 @@ A collaborative Angular 17+ app developed as a team. Each module lives in its ow
 
 ```bash
 npm install
-ng serve / npm start
+ng serve 
 ```
 
 Open → Localhost
