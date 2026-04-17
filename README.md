@@ -1,6 +1,7 @@
+
 # ManLog — Manufacturing Logistics Platform
 
-A collaborative Angular 17+ app developed as a team. Each module lives in its own feature branch.
+A collaborative Angular 21 app developed as a team. Each module lives in its own feature branch.
 
 ---
 
@@ -8,18 +9,13 @@ A collaborative Angular 17+ app developed as a team. Each module lives in its ow
 
 ```bash
 npm install
-ng serve / npm start
+ng serve
 ```
 
-Open → Localhost
-
+Open → **http://localhost:4200**
 Soon gonna Deploy and I'll Update
 
-Login with:
-`admin@manlog.com` / `123`
-`Procurement@manlog.com` / `123`
-`DC@manlog.com` / `123`
-`Supplier@manlog.com` / `123`
+Login with: `admin@manlog.com` / `123`
 
 ---
 
@@ -31,6 +27,7 @@ src/app/
 ├── features/
 │   ├── auth/login/             ← login page  (TL)
 │   ├── home/                   ← dashboard   (TL)
+│   ├── admin/                  ← 🔒 Admin team
 │   ├── procurement/            ← 🔒 Procurement team
 │   ├── supplier/               ← 🔒 Supplier team
 │   └── distribution/           ← 🔒 Distribution team

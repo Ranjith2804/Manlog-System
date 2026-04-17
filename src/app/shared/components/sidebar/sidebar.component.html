@@ -1,0 +1,30 @@
+<aside class="sidebar p-3 shadow">
+      <h4 class="text-center mb-4 mt-2 fw-bold">
+        <i class="fas fa-boxes text-primary"></i> ManLog
+      </h4>
+      <p class="text-white small text-center mb-1" *ngIf="userName">{{ userName }}</p>
+      <p class="text-white small text-center mb-4">{{ subtitle }}</p>
+
+      <div class="nav flex-column nav-pills">
+        <ng-container *ngFor="let item of items">
+          <a
+            *ngIf="item.route; else actionLink"
+            class="nav-link"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+          >
+            <i class="fas me-2" [ngClass]="item.icon"></i>{{ item.label }}
+          </a>
+          <ng-template #actionLink>
+            <button
+              type="button"
+              class="nav-link nav-button text-start border-0"
+              [class.active]="item.active"
+              (click)="item.actionKey && itemSelected.emit(item.actionKey)"
+            >
+              <i class="fas me-2" [ngClass]="item.icon"></i>{{ item.label }}
+            </button>
+          </ng-template>
+        </ng-container>
+      </div>
+    </aside>

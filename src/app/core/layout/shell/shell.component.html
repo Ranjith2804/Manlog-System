@@ -1,0 +1,19 @@
+<div class="app-page-shell">
+      <app-sidebar
+        [userName]="sidebarUserName"
+        [subtitle]="sidebarSubtitle"
+        [items]="menuItems"
+        (itemSelected)="menuAction.emit($event)"
+      />
+
+      <main class="main-content">
+        <app-top-nav
+          [title]="title"
+          [subtitle]="subtitle"
+          [userLabel]="userLabel"
+          [userIcon]="userIcon"
+          (logout)="onLogout()"
+        />
+        <ng-content></ng-content>
+      </main>
+    </div>

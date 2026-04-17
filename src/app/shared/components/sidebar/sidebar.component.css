@@ -1,0 +1,39 @@
+.sidebar {
+      min-height: 100vh;
+      background-color: #343a40;
+      color: #fff;
+      position: fixed;
+      width: 250px;
+      z-index: 1000;
+    }
+
+    .sidebar a,
+    .nav-button {
+      color: #adb5bd;
+      text-decoration: none;
+      padding: 12px 15px;
+      display: block;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      background: transparent;
+      width: 100%;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active,
+    .nav-button:hover,
+    .nav-button.active {
+      background-color: #0d6efd;
+      color: #fff;
+    }
+
+    @media (max-width: 991.98px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        min-height: auto;
+        border-radius: 0 0 12px 12px;
+      }
+    }

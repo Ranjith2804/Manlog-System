@@ -9,40 +9,8 @@ import { TopNavComponent } from '../../../shared/components/top-nav/top-nav.comp
   selector: 'app-shell',
   standalone: true,
   imports: [CommonModule, SidebarComponent, TopNavComponent],
-  template: `
-    <div class="app-page-shell">
-      <app-sidebar
-        [userName]="sidebarUserName"
-        [subtitle]="sidebarSubtitle"
-        [items]="menuItems"
-        (itemSelected)="menuAction.emit($event)"
-      />
-
-      <main class="main-content">
-        <app-top-nav
-          [title]="title"
-          [subtitle]="subtitle"
-          [userLabel]="userLabel"
-          [userIcon]="userIcon"
-          (logout)="onLogout()"
-        />
-        <ng-content></ng-content>
-      </main>
-    </div>
-  `,
-  styles: [`
-    .main-content {
-      margin-left: 250px;
-      padding: 25px;
-    }
-
-    @media (max-width: 991.98px) {
-      .main-content {
-        margin-left: 0;
-        padding: 16px;
-      }
-    }
-  `]
+  templateUrl: './shell.component.html',
+  styleUrl: './shell.component.css'
 })
 export class ShellComponent {
   @Input() title = '';
@@ -54,7 +22,7 @@ export class ShellComponent {
   @Input() menuItems: SidebarItem[] = [];
   @Input() menuAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router) { }
 
   onLogout(): void {
     this.router.navigate(['/login']);

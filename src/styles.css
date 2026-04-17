@@ -23,7 +23,98 @@ a {
 }
 
 /* Scrollbar (optional nice touch) */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb { background: #b0b7c3; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #7f8ca1; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b0b7c3;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7f8ca1;
+}
+
+/* ── Shell layout ── */
+.app-page-shell {
+  min-height: 100vh;
+}
+
+/* ── Top nav ── */
+.top-nav {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dee2e6;
+  padding: 15px 25px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+/* ── Card ── */
+.card-custom {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ── Badges ── */
+.badge-code {
+  border: 1px solid #ced4da;
+  color: #495057;
+  padding: 5px 8px;
+  background-color: #f8f9fa;
+}
+
+.badge-soft-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  padding: 6px 10px;
+}
+
+.badge-soft-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c;
+  padding: 6px 10px;
+}
+
+.badge-soft-info {
+  background-color: #cff4fc;
+  color: #055160;
+  padding: 6px 10px;
+}
+
+.badge-soft-danger {
+  background-color: #f8d7da;
+  color: #842029;
+  padding: 6px 10px;
+}
+
+/* ── Modal ── */
+.app-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(33, 37, 41, 0.55);
+  z-index: 1040;
+}
+
+.app-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.app-modal-dialog {
+  width: min(100%, 920px);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+}

@@ -1,0 +1,90 @@
+<div class="login-wrapper">
+
+      <!-- Left panel — branding -->
+      <div class="login-brand">
+        <div class="brand-content">
+          <div class="brand-logo">
+            <i class="fas fa-boxes text-primary"></i>
+          </div>
+          <h1 class="brand-name">ManLog</h1>
+          <p class="brand-tagline">Manufacturing Logistics, Unified.</p>
+          <div class="brand-modules">
+            <span><i class="bi bi-cart-check"></i> Procurement</span>
+            <span><i class="bi bi-people"></i> Supplier</span>
+            <span><i class="bi bi-truck"></i> Distribution</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right panel — login form -->
+      <div class="login-form-panel">
+        <div class="login-card">
+          <h2 class="login-title">Welcome back</h2>
+          <p class="login-subtitle">Sign in to your ManLog account</p>
+
+          <!-- Error message: Concept *ngIf -->
+          <div class="alert-error" *ngIf="showError">
+            <i class="bi bi-exclamation-circle"></i>
+            Invalid email or password. Please try again.
+          </div>
+
+          <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+
+            <!-- Email: Concept [(ngModel)] two-way binding -->
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <div class="input-wrapper">
+                <i class="bi bi-envelope input-icon"></i>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  [(ngModel)]="email"
+                  placeholder="admin@manlog.com"
+                  required
+                  autocomplete="email"
+                />
+              </div>
+            </div>
+
+            <!-- Password: Concept [(ngModel)] two-way binding -->
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="input-wrapper">
+                <i class="bi bi-lock input-icon"></i>
+                <input
+                  id="password"
+                  [type]="showPassword ? 'text' : 'password'"
+                  name="password"
+                  [(ngModel)]="password"
+                  placeholder="Enter your password"
+                  required
+                  autocomplete="current-password"
+                />
+                <!-- Event binding (click) -->
+                <button
+                  type="button"
+                  class="toggle-password"
+                  (click)="showPassword = !showPassword"
+                  [title]="showPassword ? 'Hide password' : 'Show password'">
+                  <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Submit: Concept (ngSubmit) event binding -->
+            <button type="submit" class="btn-login" id="btn-login">
+              <span *ngIf="!loading">Sign In</span>
+              <span *ngIf="loading"><i class="bi bi-arrow-repeat spin"></i> Signing in…</span>
+            </button>
+
+          </form>
+
+          <p class="login-hint">
+            <i class="bi bi-info-circle"></i>
+            Demo — use role email (admin, dc, procurement, supplier) / <strong>123</strong>
+          </p>
+        </div>
+      </div>
+
+    </div>
