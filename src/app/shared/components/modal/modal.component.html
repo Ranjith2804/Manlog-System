@@ -3,17 +3,19 @@
       <div class="app-modal">
         <div class="app-modal-dialog">
           <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header" [ngClass]="headerClass">
+            <div class="modal-header position-relative" [ngClass]="headerClass">
               <h5 class="modal-title fw-bold" [ngClass]="titleClass">
                 <ng-content select="[modal-title]"></ng-content>
               </h5>
               <button
                 type="button"
-                class="btn-close"
-                [ngClass]="closeButtonClass"
+                class="btn btn-sm btn-outline-danger rounded-circle d-flex align-items-center justify-content-center position-absolute"
+                style="top: 0.75rem; right: 0.75rem; width: 32px; height: 32px; padding: 0; font-size: 14px;"
                 aria-label="Close"
                 (click)="closed.emit()"
-              ></button>
+              >
+                <i class="fas fa-times"></i>
+              </button>
             </div>
             <div class="modal-body" [ngClass]="bodyClass">
               <ng-content></ng-content>

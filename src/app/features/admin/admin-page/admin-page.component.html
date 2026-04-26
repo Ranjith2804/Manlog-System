@@ -21,7 +21,7 @@
             </select>
           </div>
           <div class="col-md-auto text-end">
-            <button class="btn btn-primary fw-semibold shadow-sm" type="button" (click)="showModal = true">
+            <button class="btn btn-primary fw-semibold shadow-sm" type="button" (click)="openAddModal()">
               <i class="fas fa-plus-circle me-1"></i> Add New Record
             </button>
           </div>
@@ -32,15 +32,7 @@
         <div class="table-responsive" *ngIf="activeSection === 'suppliers'; else dcTable">
           <table class="table table-hover mb-0">
             <thead>
-              <tr>
-                <th class="ps-4">Supplier Code</th>
-                <th>Supplier Name</th>
-                <th>Contact Number</th>
-                <th>Email Address</th>
-                <th>City / Region</th>
-                <th>Status</th>
-                <th class="text-center">Actions</th>
-              </tr>
+              <tr><th class="ps-4">Supplier Code</th><th>Supplier Name</th><th>Contact Number</th><th>Email Address</th><th>City / Region</th><th>Status</th><th class="text-center">Actions</th></tr>
             </thead>
             <tbody>
               <tr *ngFor="let supplier of filteredSuppliers">
@@ -49,16 +41,13 @@
                 <td>{{ supplier.phone }}</td>
                 <td>{{ supplier.email }}</td>
                 <td>{{ supplier.city }}</td>
-                <td>
-                  <span class="badge rounded-pill" [ngClass]="supplier.status === 'Active' ? 'badge-soft-success' : 'badge-soft-danger'">
-                    {{ supplier.status }}
-                  </span>
-                </td>
+                <td><span class="badge rounded-pill" [ngClass]="supplier.status === 'Active' ? 'badge-soft-success' : 'badge-soft-danger'">{{ supplier.status }}</span></td>
                 <td class="text-center">
-                  <i class="fas fa-edit text-primary me-3"></i>
-                  <i class="fas fa-trash text-danger"></i>
+                  <button class="btn btn-sm btn-outline-primary me-1" (click)="editSupplier(supplier)" title="Edit"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteSupplier(supplier)" title="Delete"><i class="fas fa-trash"></i></button>
                 </td>
               </tr>
+              <tr *ngIf="filteredSuppliers.length === 0"><td colspan="7" class="text-center text-muted py-4">No suppliers found</td></tr>
             </tbody>
           </table>
         </div>
@@ -66,14 +55,7 @@
           <div class="table-responsive">
             <table class="table table-hover mb-0">
               <thead>
-                <tr>
-                  <th class="ps-4">DC Code</th>
-                  <th>Distribution Center Name</th>
-                  <th>Contact Email</th>
-                  <th>Location / City</th>
-                  <th>Status</th>
-                  <th class="text-center">Actions</th>
-                </tr>
+                <tr><th class="ps-4">DC Code</th><th>Distribution Center Name</th><th>Contact Email</th><th>Location / City</th><th>Status</th><th class="text-center">Actions</th></tr>
               </thead>
               <tbody>
                 <tr *ngFor="let dc of filteredDcs">
@@ -81,52 +63,70 @@
                   <td class="fw-bold">{{ dc.name }}</td>
                   <td>{{ dc.email }}</td>
                   <td>{{ dc.city }}</td>
-                  <td>
-                    <span class="badge rounded-pill" [ngClass]="dc.status === 'Active' ? 'badge-soft-success' : 'badge-soft-danger'">
-                      {{ dc.status }}
-                    </span>
-                  </td>
+                  <td><span class="badge rounded-pill" [ngClass]="dc.status === 'Active' ? 'badge-soft-success' : 'badge-soft-danger'">{{ dc.status }}</span></td>
                   <td class="text-center">
-                    <i class="fas fa-edit text-primary me-3"></i>
-                    <i class="fas fa-trash text-danger"></i>
+                    <button class="btn btn-sm btn-outline-primary me-1" (click)="editDC(dc)" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="deleteDC(dc)" title="Delete"><i class="fas fa-trash"></i></button>
                   </td>
                 </tr>
+                <tr *ngIf="filteredDcs.length === 0"><td colspan="6" class="text-center text-muted py-4">No distribution centers found</td></tr>
               </tbody>
             </table>
           </div>
         </ng-template>
       </div>
 
+      <!-- Add Modal -->
       <app-modal [open]="showModal" (closed)="showModal = false">
-        <span modal-title><i class="fas fa-plus-circle text-primary me-2"></i>Add Master Record</span>
-
+        <span modal-title>Add Master Record</span>
         <div class="mb-4 d-flex gap-2">
           <button type="button" class="btn" [ngClass]="modalTab === 'supplier' ? 'btn-primary' : 'btn-light border'" (click)="modalTab = 'supplier'">New Supplier</button>
           <button type="button" class="btn" [ngClass]="modalTab === 'dc' ? 'btn-primary' : 'btn-light border'" (click)="modalTab = 'dc'">New Distribution Center</button>
         </div>
 
         <form *ngIf="modalTab === 'supplier'; else dcForm" class="row g-3">
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Supplier Name</label><input type="text" class="form-control" placeholder="Enter company name"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Supplier Code</label><input type="text" class="form-control" placeholder="e.g. SUP-005"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Email Address</label><input type="email" class="form-control" placeholder="contact@company.com"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Number</label><input type="text" class="form-control" placeholder="+91"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" placeholder="Select or enter city"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select"><option>Active</option><option>Inactive</option></select></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Supplier Name</label><input type="text" class="form-control" placeholder="Enter company name" [(ngModel)]="newSupplier.name" name="sName"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Email Address</label><input type="email" class="form-control" placeholder="contact@company.com" [(ngModel)]="newSupplier.email" name="sEmail"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Number</label><input type="text" class="form-control" placeholder="+91" [(ngModel)]="newSupplier.phone" name="sPhone"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" placeholder="e.g. Chennai, TN" [(ngModel)]="newSupplier.city" name="sCity"></div>
+          <div class="col-md-12"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select" [(ngModel)]="newSupplier.status" name="sStatus"><option>Active</option><option>Inactive</option></select></div>
         </form>
-
         <ng-template #dcForm>
           <form class="row g-3">
-            <div class="col-md-6"><label class="form-label text-muted small fw-bold">DC Name</label><input type="text" class="form-control" placeholder="Enter facility name"></div>
-            <div class="col-md-6"><label class="form-label text-muted small fw-bold">DC Code</label><input type="text" class="form-control" placeholder="e.g. DC-005"></div>
-            <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Email</label><input type="email" class="form-control" placeholder="dc.contact@manlog.com"></div>
-            <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" placeholder="Select or enter city"></div>
-            <div class="col-md-12"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select"><option>Active</option><option>Inactive</option></select></div>
+            <div class="col-md-6"><label class="form-label text-muted small fw-bold">DC Name</label><input type="text" class="form-control" placeholder="Enter facility name" [(ngModel)]="newDC.name" name="dName"></div>
+            <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Email</label><input type="email" class="form-control" placeholder="dc.contact@manlog.com" [(ngModel)]="newDC.email" name="dEmail"></div>
+            <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" placeholder="e.g. Chennai, TN" [(ngModel)]="newDC.city" name="dCity"></div>
+            <div class="col-md-6"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select" [(ngModel)]="newDC.status" name="dStatus"><option>Active</option><option>Inactive</option></select></div>
           </form>
         </ng-template>
 
-        <div class="text-end mt-4 pt-3 border-top">
-          <button type="button" class="btn btn-light border me-2" (click)="showModal = false">Cancel</button>
-          <button type="button" class="btn btn-primary px-4" (click)="showModal = false">{{ modalTab === 'supplier' ? 'Save Supplier' : 'Save Distribution Center' }}</button>
+        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-light border px-4" (click)="showModal = false">Cancel</button>
+          <button type="button" class="btn btn-primary px-4 fw-semibold" (click)="saveRecord()">{{ modalTab === 'supplier' ? 'Save Supplier' : 'Save Distribution Center' }}</button>
+        </div>
+      </app-modal>
+
+      <!-- Edit Modal -->
+      <app-modal [open]="showEditModal" (closed)="showEditModal = false">
+        <span modal-title>Edit Record</span>
+        <form *ngIf="editingSupplier" class="row g-3">
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Supplier Code</label><input type="text" class="form-control bg-light" [value]="editingSupplier.code" readonly></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Supplier Name</label><input type="text" class="form-control" [(ngModel)]="editingSupplier.name" name="eName"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Email Address</label><input type="email" class="form-control" [(ngModel)]="editingSupplier.email" name="eEmail"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Number</label><input type="text" class="form-control" [(ngModel)]="editingSupplier.phone" name="ePhone"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" [(ngModel)]="editingSupplier.city" name="eCity"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select" [(ngModel)]="editingSupplier.status" name="eStatus"><option>Active</option><option>Inactive</option></select></div>
+        </form>
+        <form *ngIf="editingDC" class="row g-3">
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">DC Code</label><input type="text" class="form-control bg-light" [value]="editingDC.code" readonly></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">DC Name</label><input type="text" class="form-control" [(ngModel)]="editingDC.name" name="edName"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Email</label><input type="email" class="form-control" [(ngModel)]="editingDC.email" name="edEmail"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" [(ngModel)]="editingDC.city" name="edCity"></div>
+          <div class="col-md-12"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select" [(ngModel)]="editingDC.status" name="edStatus"><option>Active</option><option>Inactive</option></select></div>
+        </form>
+        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-light border px-4" (click)="showEditModal = false">Cancel</button>
+          <button type="button" class="btn btn-primary px-4 fw-semibold" (click)="saveEdit()">Save Changes</button>
         </div>
       </app-modal>
     </app-shell>

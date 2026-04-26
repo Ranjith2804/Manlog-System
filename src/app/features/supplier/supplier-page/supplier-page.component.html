@@ -10,9 +10,13 @@
       <div *ngIf="activeSection === 'products'; else orderSection">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5 class="fw-bold mb-0">Product Management</h5>
-          <div>
-            <button class="btn btn-outline-secondary me-2 fw-semibold" type="button" (click)="showCategoryModal = true"><i class="fas fa-folder-plus me-1"></i> Create Category</button>
-            <button class="btn btn-primary fw-semibold" type="button" (click)="showProductModal = true"><i class="fas fa-plus-circle me-1"></i> Add New Product</button>
+          <div class="d-flex gap-2">
+            <div class="input-group" style="max-width: 250px;">
+              <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+              <input type="text" class="form-control" placeholder="Search products..." [(ngModel)]="productSearch">
+            </div>
+            <button class="btn btn-outline-secondary fw-semibold" type="button" (click)="showCategoryModal = true"><i class="fas fa-folder-plus me-1"></i> Create Category</button>
+            <button class="btn btn-primary fw-semibold" type="button" (click)="openAddProduct()"><i class="fas fa-plus-circle me-1"></i> Add New Product</button>
           </div>
         </div>
 
@@ -20,20 +24,24 @@
           <div class="table-responsive">
             <table class="table table-hover mb-0">
               <thead>
-                <tr><th>Product Name</th><th>Category</th><th>Sub Category</th><th>SKU Code</th><th>Unit</th><th>Supplier Rate</th><th>Lead Time</th><th>Min Qty</th><th>Status</th></tr>
+                <tr><th>Product Name</th><th>Category</th><th>Sub Category</th><th>SKU Code</th><th>Unit</th><th>Supplier Rate</th><th>Lead Time</th><th>Min Qty</th><th>Status</th><th class="text-center">Action</th></tr>
               </thead>
               <tbody>
-                <tr *ngFor="let product of products">
+                <tr *ngFor="let product of filteredProducts">
                   <td class="fw-bold">{{ product.name }}</td>
                   <td>{{ product.category }}</td>
                   <td>{{ product.subCategory }}</td>
                   <td><span class="badge badge-code rounded-1">{{ product.sku }}</span></td>
                   <td>{{ product.unit }}</td>
-                  <td>{{ product.rate }}</td>
-                  <td>{{ product.leadTime }}</td>
+                  <td>Rs {{ product.rate | number:'1.2-2' }}</td>
+                  <td>{{ product.leadTime }} Days</td>
                   <td>{{ product.minQty }}</td>
                   <td><span class="badge rounded-pill" [ngClass]="product.status === 'Active' ? 'badge-soft-success' : 'badge-soft-danger'">{{ product.status }}</span></td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product.sku)" title="Delete"><i class="fas fa-trash"></i></button>
+                  </td>
                 </tr>
+                <tr *ngIf="filteredProducts.length === 0"><td colspan="10" class="text-center text-muted py-4">No products found</td></tr>
               </tbody>
             </table>
           </div>
@@ -50,14 +58,14 @@
               </thead>
               <tbody>
                 <tr *ngFor="let order of orders">
-                  <td class="ps-4"><span class="badge badge-code rounded-1" [class.text-primary]="order.highlight">{{ order.id }}</span></td>
+                  <td class="ps-4"><span class="badge badge-code rounded-1">{{ order.id }}</span></td>
                   <td>{{ order.date }}</td>
-                  <td class="fw-bold">{{ order.destination }}</td>
-                  <td>{{ order.value }}</td>
-                  <td><span class="badge rounded-pill" [ngClass]="order.badgeClass">{{ order.status }}</span></td>
+                  <td class="fw-bold">{{ order.dcName }}</td>
+                  <td>{{ formatValue(order.value) }}</td>
+                  <td><span class="badge rounded-pill" [ngClass]="badgeClass(order.status)">{{ order.status }}</span></td>
                   <td class="text-center">
-                    <button *ngIf="order.actionable; else locked" class="btn btn-sm btn-primary fw-bold" type="button" (click)="showOrderModal = true">Review & Act</button>
-                    <ng-template #locked><button class="btn btn-sm btn-outline-secondary" disabled>Locked</button></ng-template>
+                    <button *ngIf="isActionable(order); else locked" class="btn btn-sm btn-primary fw-bold" type="button" (click)="reviewOrder(order)">Review & Act</button>
+                    <ng-template #locked><button class="btn btn-sm btn-outline-secondary" disabled>{{ order.status }}</button></ng-template>
                   </td>
                 </tr>
               </tbody>
@@ -66,52 +74,69 @@
         </div>
       </ng-template>
 
+      <!-- Create Category Modal -->
       <app-modal [open]="showCategoryModal" (closed)="showCategoryModal = false">
-        <span modal-title><i class="fas fa-folder-plus text-primary me-2"></i>Create Category</span>
-        <form>
-          <div class="mb-3"><label class="form-label text-muted small fw-bold">Category Name</label><input type="text" class="form-control" placeholder="e.g. Electrical"></div>
-          <div class="mb-3"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select"><option>Active</option><option>Inactive</option></select></div>
-        </form>
-        <div class="text-end mt-4 pt-3 border-top">
-          <button type="button" class="btn btn-light border me-2" (click)="showCategoryModal = false">Cancel</button>
-          <button type="button" class="btn btn-secondary px-4" (click)="showCategoryModal = false">Create Category</button>
+        <span modal-title>Create Category</span>
+        <div class="mb-3"><label class="form-label text-muted small fw-bold">Category Name</label><input type="text" class="form-control" placeholder="e.g. Electrical" [(ngModel)]="newCategoryName"></div>
+        <div class="mb-3"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select" [(ngModel)]="newCategoryStatus"><option>Active</option><option>Inactive</option></select></div>
+        <div *ngIf="categories.length" class="mb-3">
+          <label class="form-label text-muted small fw-bold">Existing Categories</label>
+          <div class="d-flex flex-wrap gap-1">
+            <span *ngFor="let cat of categories" class="badge bg-light text-dark border">{{ cat }}</span>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-light border px-4" (click)="showCategoryModal = false">Cancel</button>
+          <button type="button" class="btn btn-secondary px-4 fw-semibold" (click)="createCategory()">Create Category</button>
         </div>
       </app-modal>
 
+      <!-- Add Product Modal -->
       <app-modal [open]="showProductModal" (closed)="showProductModal = false">
-        <span modal-title><i class="fas fa-box-open text-primary me-2"></i>Add New Product</span>
+        <span modal-title>Add New Product</span>
         <form class="row g-3">
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Product Name</label><input type="text" class="form-control" placeholder="e.g. Copper Wire"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Category</label><select class="form-select"><option>Electrical</option><option>Construction</option><option>Plumbing</option></select></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Sub Category</label><input type="text" class="form-control" placeholder="e.g. Cables"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">SKU Code</label><input type="text" class="form-control" placeholder="e.g. SKU-101"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Unit</label><select class="form-select"><option>Piece</option><option>Kg</option><option>Meter</option><option>Bag</option></select></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Specification</label><input type="text" class="form-control" placeholder="e.g. 1.5mm FR Grade"></div>
-          <div class="col-md-4"><label class="form-label text-muted small fw-bold">Supplier Rate (Rs)</label><input type="number" class="form-control" placeholder="120"></div>
-          <div class="col-md-4"><label class="form-label text-muted small fw-bold">Lead Time (Days)</label><input type="number" class="form-control" placeholder="5"></div>
-          <div class="col-md-4"><label class="form-label text-muted small fw-bold">Min Order Qty</label><input type="number" class="form-control" placeholder="100"></div>
-          <div class="col-md-12"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select"><option>Active</option><option>Inactive</option></select></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Product Name</label><input type="text" class="form-control" placeholder="e.g. Copper Wire" [(ngModel)]="newProductName" name="pName"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Category</label>
+            <select class="form-select" [(ngModel)]="newProductCategory" name="pCat">
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+          </div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Sub Category</label><input type="text" class="form-control" placeholder="e.g. Cables" [(ngModel)]="newProductSubCategory" name="pSub"></div>
+          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Unit</label>
+            <select class="form-select" [(ngModel)]="newProductUnit" name="pUnit"><option>Piece</option><option>Kg</option><option>Meter</option><option>Bag</option></select>
+          </div>
+          <div class="col-md-4"><label class="form-label text-muted small fw-bold">Supplier Rate (Rs)</label><input type="number" class="form-control" placeholder="120" [(ngModel)]="newProductRate" name="pRate"></div>
+          <div class="col-md-4"><label class="form-label text-muted small fw-bold">Lead Time (Days)</label><input type="number" class="form-control" placeholder="5" [(ngModel)]="newProductLeadTime" name="pLead"></div>
+          <div class="col-md-4"><label class="form-label text-muted small fw-bold">Min Order Qty</label><input type="number" class="form-control" placeholder="100" [(ngModel)]="newProductMinQty" name="pMin"></div>
+          <div class="col-md-12"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select" [(ngModel)]="newProductStatus" name="pStatus"><option>Active</option><option>Inactive</option></select></div>
         </form>
-        <div class="text-end mt-4 pt-3 border-top">
-          <button type="button" class="btn btn-light border me-2" (click)="showProductModal = false">Cancel</button>
-          <button type="button" class="btn btn-primary px-4" (click)="showProductModal = false">Save Product</button>
+        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-light border px-4" (click)="showProductModal = false">Cancel</button>
+          <button type="button" class="btn btn-primary px-4 fw-semibold" (click)="saveProduct()">Save Product</button>
         </div>
       </app-modal>
 
-      <app-modal [open]="showOrderModal" (closed)="showOrderModal = false" headerClass="bg-primary text-white" titleClass="text-white" closeButtonClass="btn-close-white">
-        <span modal-title>Review Purchase Order: PO-2026-1001</span>
+      <!-- Review Order Modal -->
+      <app-modal *ngIf="selectedOrder" [open]="showOrderModal" (closed)="showOrderModal = false">
+        <span modal-title>Review Purchase Order: {{ selectedOrder.id }}</span>
         <div class="row mb-3">
-          <div class="col-md-6"><p class="mb-1 text-muted small">Deliver To:</p><h6 class="fw-bold">Chennai Hub - Primary</h6><small>123 Logistics Park, Chennai, TN</small></div>
-          <div class="col-md-6 text-end"><p class="mb-1 text-muted small">Requested Delivery Date:</p><h6 class="fw-bold text-danger">01-Mar-2026</h6></div>
+          <div class="col-md-6"><p class="mb-1 text-muted small">Deliver To:</p><h6 class="fw-bold">{{ selectedOrder.dcName }}</h6></div>
+          <div class="col-md-6 text-end"><p class="mb-1 text-muted small">Order Date:</p><h6 class="fw-bold">{{ selectedOrder.date }}</h6></div>
         </div>
-        <table class="table table-bordered mb-4">
-          <thead class="table-light"><tr><th>SKU Code</th><th>Product Name</th><th>Qty Requested</th><th>Unit Price</th><th>Total Price</th></tr></thead>
-          <tbody><tr><td>SKU-101</td><td>Copper Wire (1.5mm)</td><td>200 Meters</td><td>Rs 120</td><td class="fw-bold">Rs 24,000</td></tr></tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-bordered mb-4">
+            <thead class="table-light"><tr><th>SKU Code</th><th>Product Name</th><th>Qty Requested</th><th>Unit Price</th><th>Total Price</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let item of selectedOrder.items">
+                <td>{{ item.sku }}</td><td>{{ item.product }}</td><td>{{ item.quantity }}</td><td>Rs {{ item.unitPrice | number:'1.2-2' }}</td><td class="fw-bold">Rs {{ item.total | number:'1.2-2' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div class="alert alert-info border-0 text-center"><i class="fas fa-info-circle me-2"></i> Accepting this PO will automatically generate an <strong>Inbound Shipment</strong> record.</div>
-        <div class="d-flex justify-content-between mt-4">
-          <button type="button" class="btn btn-outline-danger px-4" (click)="showOrderModal = false"><i class="fas fa-times me-1"></i> Decline PO</button>
-          <button type="button" class="btn btn-success px-4" (click)="showOrderModal = false"><i class="fas fa-check-circle me-1"></i> Accept & Generate Shipment</button>
+        <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-outline-danger px-4 fw-semibold" (click)="declineOrder()"><i class="fas fa-times me-1"></i> Decline PO</button>
+          <button type="button" class="btn btn-success px-4 fw-semibold" (click)="acceptOrder()"><i class="fas fa-check-circle me-1"></i> Accept & Generate Shipment</button>
         </div>
       </app-modal>
     </app-shell>
