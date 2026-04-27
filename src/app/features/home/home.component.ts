@@ -62,7 +62,7 @@ export class HomeComponent {
 
   navLinks = [
 
-    { label: 'Features', href: '#' },
-    { label: 'Support', href: '#' },
+    { label: 'Features', href: '#features' },
+    { label: 'Support', href: '#cta' },
   ];
 }

@@ -110,11 +110,39 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 1.5rem;
+  overflow-y: auto;
 }
 
 .app-modal-dialog {
-  width: min(100%, 920px);
-  max-height: calc(100vh - 2rem);
-  overflow: auto;
+  width: min(100%, 960px);
+  max-height: calc(100vh - 3rem);
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+}
+
+.app-modal-dialog .modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 3rem);
+  overflow: hidden;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+}
+
+.app-modal-dialog .modal-body {
+  overflow-y: auto;
+  flex: 1 1 auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+}
+
+.app-modal-dialog .modal-header {
+  flex-shrink: 0;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
 }
