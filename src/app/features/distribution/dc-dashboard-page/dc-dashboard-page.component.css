@@ -1,0 +1,67 @@
+/* ─── DC Dashboard Page Component Styles ─── */
+
+/* Section card wrapper */
+.card-custom {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* Table header */
+.table thead th {
+  background-color: #f8f9fa;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6c757d;
+  border-bottom: 2px solid #dee2e6;
+  padding: 0.85rem 0.75rem;
+  white-space: nowrap;
+}
+
+/* Table body rows */
+.table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  padding: 0.85rem 0.75rem;
+  font-size: 0.9rem;
+  color: #212529;
+}
+
+/* Code badges */
+.badge-code {
+  background-color: #e9ecef;
+  color: #495057;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35em 0.6em;
+}
+
+/* Status – pending warning */
+.badge-soft-warning {
+  background-color: #fff3cd;
+  color: #664d03;
+}
+
+/* Inventory quantity columns */
+.text-end.fw-bold {
+  letter-spacing: 0.02em;
+}
+
+/* Section heading */
+h5.fw-bold {
+  font-size: 1.05rem;
+}
+
+/* Inventory search input */
+.input-group .input-group-text {
+  border-right: none;
+}
+
+.input-group .form-control {
+  border-left: none;
+}
