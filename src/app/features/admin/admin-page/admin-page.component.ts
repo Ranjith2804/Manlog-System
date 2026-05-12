@@ -10,7 +10,8 @@ import { SidebarItem } from '../../../shared/components/sidebar/sidebar.componen
   selector: 'app-admin-page',
   standalone: true,
   imports: [CommonModule, FormsModule, ShellComponent, ModalComponent],
-  templateUrl: './admin-page.component.html'
+  templateUrl: './admin-page.component.html',
+  styleUrl: './admin-page.component.css'
 })
 export class AdminPageComponent {
   readonly menuEmitter = new EventEmitter<string>();

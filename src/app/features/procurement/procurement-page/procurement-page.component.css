@@ -1,0 +1,76 @@
+/* ─── Procurement Page Component Styles ─── */
+
+/* Card wrapper */
+.card-custom {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* Table header */
+.table thead th {
+  background-color: #f8f9fa;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6c757d;
+  border-bottom: 2px solid #dee2e6;
+  padding: 0.85rem 0.75rem;
+  white-space: nowrap;
+}
+
+/* Table body rows */
+.table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  padding: 0.85rem 0.75rem;
+  font-size: 0.9rem;
+  color: #212529;
+}
+
+/* Code badges */
+.badge-code {
+  background-color: #e9ecef;
+  color: #495057;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35em 0.6em;
+}
+
+/* Status badge variants */
+.badge-soft-warning {
+  background-color: #fff3cd;
+  color: #664d03;
+}
+
+.badge-soft-info {
+  background-color: #cff4fc;
+  color: #055160;
+}
+
+.badge-soft-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+/* Highlighted PO row */
+tr.highlighted td {
+  background-color: #fffbf0;
+}
+
+/* Estimated PO value label */
+.estimated-value {
+  font-size: 1rem;
+  color: #0d6efd;
+}
+
+/* Modal section heading */
+.modal-section-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0d6efd;
+}

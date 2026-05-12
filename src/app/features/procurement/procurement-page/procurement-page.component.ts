@@ -10,7 +10,8 @@ import { StatCardComponent } from '../../../shared/components/stat-card/stat-car
   selector: 'app-procurement-page',
   standalone: true,
   imports: [CommonModule, ShellComponent, ModalComponent, StatCardComponent],
-  templateUrl: './procurement-page.component.html'
+  templateUrl: './procurement-page.component.html',
+  styleUrl: './procurement-page.component.css'
 })
 export class ProcurementPageComponent {
   readonly menuEmitter = new EventEmitter<string>();

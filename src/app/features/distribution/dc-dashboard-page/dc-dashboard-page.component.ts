@@ -9,7 +9,8 @@ import { SidebarItem } from '../../../shared/components/sidebar/sidebar.componen
   selector: 'app-dc-dashboard-page',
   standalone: true,
   imports: [CommonModule, ShellComponent, ModalComponent],
-  templateUrl: './dc-dashboard-page.component.html'
+  templateUrl: './dc-dashboard-page.component.html',
+  styleUrl: './dc-dashboard-page.component.css'
 })
 export class DcDashboardPageComponent {
   readonly menuEmitter = new EventEmitter<string>();
