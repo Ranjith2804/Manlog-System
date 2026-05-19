@@ -9,7 +9,8 @@ import { SidebarItem } from '../../../shared/components/sidebar/sidebar.componen
   selector: 'app-supplier-page',
   standalone: true,
   imports: [CommonModule, ShellComponent, ModalComponent],
-  templateUrl: './supplier-page.component.html'
+  templateUrl: './supplier-page.component.html',
+  styleUrl: './supplier-page.component.css'
 })
 export class SupplierPageComponent {
   readonly menuEmitter = new EventEmitter<string>();

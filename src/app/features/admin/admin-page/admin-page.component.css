@@ -1,0 +1,68 @@
+/* ─── Admin Page Component Styles ─── */
+
+/* Filter / search bar card */
+.card-custom {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* Table header */
+.table thead th {
+  background-color: #f8f9fa;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6c757d;
+  border-bottom: 2px solid #dee2e6;
+  padding: 0.85rem 0.75rem;
+  white-space: nowrap;
+}
+
+/* Table rows */
+.table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  padding: 0.85rem 0.75rem;
+  font-size: 0.9rem;
+  color: #212529;
+}
+
+/* Badge – code style (e.g. SUP-001, DC-1001) */
+.badge-code {
+  background-color: #e9ecef;
+  color: #495057;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35em 0.6em;
+}
+
+/* Status badges */
+.badge-soft-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.badge-soft-danger {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+/* Action icons */
+.fa-edit,
+.fa-trash {
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.fa-edit:hover {
+  opacity: 0.7;
+}
+
+.fa-trash:hover {
+  opacity: 0.7;
+}
