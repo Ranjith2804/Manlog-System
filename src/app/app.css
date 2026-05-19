@@ -45,25 +45,81 @@
     padding: 6px 10px;
 }
 
-.app-modal-backdrop {
+/* ─────────────────────────────────────────────────────
+   MODAL PORTAL STYLES
+   These classes are applied to DOM nodes appended
+   directly to <body> by ModalComponent, so they live
+   completely outside the shell's stacking context.
+───────────────────────────────────────────────────── */
+
+/* Wrapper appended to body */
+.manlog-portal {
     position: fixed;
     inset: 0;
-    background: rgba(33, 37, 41, .55);
-    z-index: 1040;
+    z-index: 99999;
+    pointer-events: none;  /* let clicks reach children selectively */
 }
 
-.app-modal {
+/* Dark backdrop — full viewport */
+.manlog-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 1050;
+    background: rgba(0, 0, 0, 0.55);
+    pointer-events: all;   /* captures outside-clicks to dismiss */
+}
+
+/* Centering wrapper */
+.manlog-modal-wrap {
+    position: fixed;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 1.5rem;
+    pointer-events: none;  /* clicks pass through to backdrop */
 }
 
-.app-modal-dialog {
-    width: min(100%, 920px);
-    max-height: calc(100vh - 2rem);
-    overflow: auto;
+/* Dialog box */
+.manlog-dialog {
+    pointer-events: all;           /* re-enable clicks inside dialog */
+    width: min(100%, 860px);
+    max-height: calc(100vh - 3rem);
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
 }
+
+/* modal-content fills dialog */
+.manlog-dialog .modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: calc(100vh - 3rem);
+    background: #ffffff;
+    border: none;
+    overflow: hidden;
+}
+
+/* Header — fixed height, never scrolls */
+.manlog-dialog .modal-header {
+    flex-shrink: 0;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Body — scrolls when content overflows */
+.manlog-dialog .modal-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1.5rem;
+    background: #ffffff;
+}
+
+/* Legacy selectors kept for safety (no-ops now) */
+.app-modal-backdrop { display: none; }
+.app-modal          { display: none; }
+.app-modal-dialog   { display: none; }

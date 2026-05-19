@@ -9,12 +9,21 @@
       [menuAction]="menuEmitter"
     >
       <div *ngIf="activeSection === 'receipts'; else inventorySection">
-        <div class="d-flex justify-content-between align-items-center mb-3"><h5 class="fw-bold mb-0">Shipments At Gate (Action Required)</h5></div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold mb-0">Shipments At Gate <span class="badge badge-soft-warning ms-2 rounded-pill fs-6">Action Required</span></h5>
+        </div>
         <div class="card-custom shadow-sm">
           <div class="table-responsive">
             <table class="table table-hover mb-0">
               <thead>
-                <tr><th class="ps-4">Receipt ID</th><th>Shipment ID</th><th>Vehicle No.</th><th>Arrival Date</th><th>Status</th><th class="text-center">Action</th></tr>
+                <tr>
+                  <th class="ps-4">Receipt ID</th>
+                  <th>Shipment ID</th>
+                  <th>Vehicle No.</th>
+                  <th>Arrival Date</th>
+                  <th>Status</th>
+                  <th class="text-center">Action</th>
+                </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let receipt of receipts">
@@ -23,7 +32,11 @@
                   <td class="fw-bold">{{ receipt.vehicle }}</td>
                   <td>{{ receipt.date }}</td>
                   <td><span class="badge rounded-pill badge-soft-warning">{{ receipt.status }}</span></td>
-                  <td class="text-center"><button class="btn btn-sm btn-primary fw-bold" type="button" (click)="showVerifyModal = true"><i class="fas fa-check-circle me-1"></i> Verify Receipt</button></td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-primary fw-semibold" type="button" (click)="showVerifyModal = true">
+                      <i class="fas fa-check-circle me-1"></i> Verify Receipt
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -43,7 +56,14 @@
           <div class="table-responsive">
             <table class="table table-hover mb-0">
               <thead>
-                <tr><th class="ps-4">SKU Code</th><th>Product Name</th><th>Category</th><th class="text-success text-end">Available Qty</th><th class="text-danger text-end">Blocked Qty</th><th class="text-primary text-end pe-4">Total Stock</th></tr>
+                <tr>
+                  <th class="ps-4">SKU Code</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th class="text-success text-end">Available Qty</th>
+                  <th class="text-danger text-end">Blocked Qty</th>
+                  <th class="text-primary text-end pe-4">Total Stock</th>
+                </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of inventory">
@@ -60,25 +80,83 @@
         </div>
       </ng-template>
 
-      <app-modal [open]="showVerifyModal" (closed)="showVerifyModal = false" headerClass="bg-primary text-white" titleClass="text-white" closeButtonClass="btn-close-white">
-        <span modal-title><i class="fas fa-clipboard-check me-2"></i>Verify Receipt: RCPT-1001</span>
-        <div class="row mb-4 bg-light p-3 rounded mx-1">
-          <div class="col-md-4"><p class="mb-1 text-muted small">Linked Shipment:</p><h6 class="fw-bold text-primary">SHP-5022</h6></div>
-          <div class="col-md-4"><p class="mb-1 text-muted small">Transport Vehicle:</p><h6 class="fw-bold">TN-01-AB-1234</h6></div>
-          <div class="col-md-4"><p class="mb-1 text-muted small">Supplier:</p><h6 class="fw-bold">Arun Traders</h6></div>
+      <!-- ── VERIFY RECEIPT MODAL ── -->
+      <app-modal [open]="showVerifyModal" (closed)="showVerifyModal = false"
+        headerClass="bg-primary text-white"
+        titleClass="text-white"
+        closeButtonClass="btn-close-white">
+
+        <span modal-title>
+          <i class="fas fa-clipboard-check me-2"></i>Verify Receipt: RCPT-1001
+        </span>
+
+        <!-- Summary row -->
+        <div class="row g-3 bg-light rounded p-3 mb-4">
+          <div class="col-md-4">
+            <p class="mb-1 text-muted small fw-semibold">Linked Shipment</p>
+            <span class="fw-bold text-primary fs-6">SHP-5022</span>
+          </div>
+          <div class="col-md-4">
+            <p class="mb-1 text-muted small fw-semibold">Transport Vehicle</p>
+            <span class="fw-bold fs-6">TN-01-AB-1234</span>
+          </div>
+          <div class="col-md-4">
+            <p class="mb-1 text-muted small fw-semibold">Supplier</p>
+            <span class="fw-bold fs-6">Arun Traders</span>
+          </div>
         </div>
-        <table class="table table-bordered mb-4 align-middle">
-          <thead class="table-light"><tr><th>SKU Code</th><th>Expected (Shipped)</th><th style="width: 150px;">Received Qty</th><th style="width: 150px;">Damaged Qty</th></tr></thead>
-          <tbody>
-            <tr><td><span class="badge badge-code">SKU-101</span><br><small class="text-muted">Copper Wire</small></td><td class="text-center fw-bold">200</td><td><input type="number" class="form-control" value="200" min="0"></td><td><input type="number" class="form-control text-danger border-danger" value="0" min="0"></td></tr>
-            <tr><td><span class="badge badge-code">SKU-105</span><br><small class="text-muted">Steel Rod</small></td><td class="text-center fw-bold">500</td><td><input type="number" class="form-control" value="495" min="0"></td><td><input type="number" class="form-control text-danger border-danger" value="5" min="0"></td></tr>
-          </tbody>
-        </table>
-        <div class="mb-3"><label class="form-label text-muted small fw-bold">Receiver's Name (Digital Signature)</label><input type="text" class="form-control" placeholder="Enter your full name to confirm"></div>
-        <div class="alert alert-info border-0 text-center small mb-0"><i class="fas fa-info-circle me-1"></i> Confirming this will permanently update <strong>Live Inventory</strong> and mark the PO as received.</div>
-        <div class="d-flex justify-content-between mt-4">
+
+        <!-- Line items table -->
+        <div class="table-responsive mb-4">
+          <table class="table table-bordered align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>SKU / Product</th>
+                <th class="text-center">Expected Qty</th>
+                <th style="width: 140px;">Received Qty</th>
+                <th style="width: 140px;">Damaged Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span class="badge badge-code rounded-1">SKU-101</span>
+                  <div class="small text-muted mt-1">Copper Wire</div>
+                </td>
+                <td class="text-center fw-bold">200</td>
+                <td><input type="number" class="form-control" value="200" min="0"></td>
+                <td><input type="number" class="form-control border-danger text-danger" value="0" min="0"></td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="badge badge-code rounded-1">SKU-105</span>
+                  <div class="small text-muted mt-1">Steel Rod</div>
+                </td>
+                <td class="text-center fw-bold">500</td>
+                <td><input type="number" class="form-control" value="495" min="0"></td>
+                <td><input type="number" class="form-control border-danger text-danger" value="5" min="0"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Signature -->
+        <div class="mb-4">
+          <label class="form-label text-muted small fw-semibold">Receiver's Name <span class="text-muted fw-normal">(acts as digital signature)</span></label>
+          <input type="text" class="form-control" placeholder="Enter your full name to confirm">
+        </div>
+
+        <div class="alert alert-info border-0 small mb-0 rounded">
+          <i class="fas fa-info-circle me-1"></i>
+          Confirming will permanently update <strong>Live Inventory</strong> and mark the PO as received.
+        </div>
+
+        <!-- Footer -->
+        <div class="d-flex justify-content-between mt-4 pt-3 border-top">
           <button type="button" class="btn btn-outline-secondary px-4" (click)="showVerifyModal = false">Cancel</button>
-          <button type="button" class="btn btn-success px-4" (click)="showVerifyModal = false"><i class="fas fa-save me-2"></i> Confirm & Update Stock</button>
+          <button type="button" class="btn btn-success px-4" (click)="showVerifyModal = false">
+            <i class="fas fa-save me-1"></i> Confirm & Update Stock
+          </button>
         </div>
       </app-modal>
     </app-shell>

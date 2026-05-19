@@ -97,36 +97,95 @@
         </ng-template>
       </div>
 
+      <!-- ── ADD MASTER RECORD MODAL ── -->
       <app-modal [open]="showModal" (closed)="showModal = false">
-        <span modal-title><i class="fas fa-plus-circle text-primary me-2"></i>Add Master Record</span>
+        <span modal-title>
+          <i class="fas fa-plus-circle text-primary me-2"></i>Add Master Record
+        </span>
 
-        <div class="mb-4 d-flex gap-2">
-          <button type="button" class="btn" [ngClass]="modalTab === 'supplier' ? 'btn-primary' : 'btn-light border'" (click)="modalTab = 'supplier'">New Supplier</button>
-          <button type="button" class="btn" [ngClass]="modalTab === 'dc' ? 'btn-primary' : 'btn-light border'" (click)="modalTab = 'dc'">New Distribution Center</button>
+        <!-- Tab switcher -->
+        <div class="d-flex gap-2 mb-4">
+          <button type="button" class="btn"
+            [ngClass]="modalTab === 'supplier' ? 'btn-primary' : 'btn-outline-secondary'"
+            (click)="modalTab = 'supplier'">
+            <i class="fas fa-building me-1"></i> New Supplier
+          </button>
+          <button type="button" class="btn"
+            [ngClass]="modalTab === 'dc' ? 'btn-primary' : 'btn-outline-secondary'"
+            (click)="modalTab = 'dc'">
+            <i class="fas fa-warehouse me-1"></i> New Distribution Center
+          </button>
         </div>
 
-        <form *ngIf="modalTab === 'supplier'; else dcForm" class="row g-3">
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Supplier Name</label><input type="text" class="form-control" placeholder="Enter company name"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Supplier Code</label><input type="text" class="form-control" placeholder="e.g. SUP-005"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Email Address</label><input type="email" class="form-control" placeholder="contact@company.com"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Number</label><input type="text" class="form-control" placeholder="+91"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" placeholder="Select or enter city"></div>
-          <div class="col-md-6"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select"><option>Active</option><option>Inactive</option></select></div>
-        </form>
+        <!-- Supplier Form -->
+        <ng-container *ngIf="modalTab === 'supplier'; else dcForm">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">Supplier Name</label>
+              <input type="text" class="form-control" placeholder="Enter company name">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">Supplier Code</label>
+              <input type="text" class="form-control" placeholder="e.g. SUP-005">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">Email Address</label>
+              <input type="email" class="form-control" placeholder="contact@company.com">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">Contact Number</label>
+              <input type="text" class="form-control" placeholder="+91 XXXXX XXXXX">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">City / Location</label>
+              <input type="text" class="form-control" placeholder="e.g. Chennai, TN">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">Status</label>
+              <select class="form-select">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+          </div>
+        </ng-container>
 
+        <!-- DC Form -->
         <ng-template #dcForm>
-          <form class="row g-3">
-            <div class="col-md-6"><label class="form-label text-muted small fw-bold">DC Name</label><input type="text" class="form-control" placeholder="Enter facility name"></div>
-            <div class="col-md-6"><label class="form-label text-muted small fw-bold">DC Code</label><input type="text" class="form-control" placeholder="e.g. DC-005"></div>
-            <div class="col-md-6"><label class="form-label text-muted small fw-bold">Contact Email</label><input type="email" class="form-control" placeholder="dc.contact@manlog.com"></div>
-            <div class="col-md-6"><label class="form-label text-muted small fw-bold">City / Location</label><input type="text" class="form-control" placeholder="Select or enter city"></div>
-            <div class="col-md-12"><label class="form-label text-muted small fw-bold">Status</label><select class="form-select"><option>Active</option><option>Inactive</option></select></div>
-          </form>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">DC Name</label>
+              <input type="text" class="form-control" placeholder="Enter facility name">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">DC Code</label>
+              <input type="text" class="form-control" placeholder="e.g. DC-005">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">Contact Email</label>
+              <input type="email" class="form-control" placeholder="dc.contact@manlog.com">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small fw-semibold">City / Location</label>
+              <input type="text" class="form-control" placeholder="e.g. Chennai, TN">
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small fw-semibold">Status</label>
+              <select class="form-select">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+          </div>
         </ng-template>
 
-        <div class="text-end mt-4 pt-3 border-top">
-          <button type="button" class="btn btn-light border me-2" (click)="showModal = false">Cancel</button>
-          <button type="button" class="btn btn-primary px-4" (click)="showModal = false">{{ modalTab === 'supplier' ? 'Save Supplier' : 'Save Distribution Center' }}</button>
+        <!-- Footer -->
+        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-outline-secondary px-4" (click)="showModal = false">Cancel</button>
+          <button type="button" class="btn btn-primary px-4" (click)="showModal = false">
+            <i class="fas fa-save me-1"></i>
+            {{ modalTab === 'supplier' ? 'Save Supplier' : 'Save Distribution Center' }}
+          </button>
         </div>
       </app-modal>
     </app-shell>
